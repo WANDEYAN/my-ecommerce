@@ -174,30 +174,5 @@ function getSeverity(product) {
                 </template>
             </DataView>
         </div>
-
-        <div class="flex flex-col lg:flex-row gap-8">
-            <div class="lg:w-2/3">
-                <div class="card">
-                    <div class="font-semibold text-xl mb-4">PickList</div>
-                    <PickList v-model="picklistProducts" breakpoint="1400px" dataKey="id">
-                        <template #option="{ option }">
-                            {{ option.name }}
-                        </template>
-                    </PickList>
-                </div>
-            </div>
-
-            <div class="lg:w-1/3">
-                <div class="card">
-                    <div class="font-semibold text-xl mb-4">OrderList</div>
-                    <OrderList v-model="orderlistProducts" breakpoint="1400px" dataKey="id" pt:pcList:root="w-full">
-                        <template #option="{ option }">
-                            {{ option.name }}
-                        </template>
-                    </OrderList>
-                </div>
-            </div>
-        </div>
-
     </div>
 </template>
