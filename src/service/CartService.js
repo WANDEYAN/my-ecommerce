@@ -4,7 +4,7 @@ export const CartService = {
             {
                 id: '1000',
                 code: 'f230fh0g3',
-                name: 'Bamboo Watch',
+                name: 'Bamboo Watch Ultra Max Pro Gold Premiun Silver X',
                 description: 'Product Description',
                 image: 'bamboo-watch.jpg',
                 price: 65,
