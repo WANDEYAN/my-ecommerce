@@ -1,5 +1,9 @@
 <script setup>
 import { CartService } from '@/service/CartService';
+import Accordion from 'primevue/accordion';
+import AccordionContent from 'primevue/accordioncontent';
+import AccordionHeader from 'primevue/accordionheader';
+import AccordionPanel from 'primevue/accordionpanel';
 import Step from 'primevue/step';
 import StepList from 'primevue/steplist';
 import StepPanel from 'primevue/steppanel';
@@ -7,10 +11,26 @@ import StepPanels from 'primevue/steppanels';
 import Stepper from 'primevue/stepper';
 import { onMounted, ref } from 'vue';
 import BuyBox from './BuyBox.vue';
+import IconsPayments from './IconsPayments.vue';
 import InputNumberAmount from './InputNumberAmount.vue';
 import TitleProduct from './TitleProduct.vue';
 
 const shoppingCartItems = ref([]);
+const paymentTabs = ref([
+    {
+        method: 'PIX',
+        description: 'With pix payment method you have 5% off on your shopping'
+    },
+    {
+        method: 'CREDIT CARD',
+        description: 'Pay for your purchases in up to 12 times interest-free installments'
+    },
+    {
+        method: 'TICKET BANK',
+        description: 'This method is nothing special'
+    }
+]);
+const paymentSelect = ref(null);
 
 onMounted(() => {
     CartService.getItemsCart().then((data) => {
@@ -90,7 +110,25 @@ const formatCurrency = (value) => {
                         </StepPanel>
                         <StepPanel v-slot="{ activateCallback }" value="4">
                             <div>
-                                Panel 4
+                                <Accordion value="0">
+                                    <AccordionPanel v-for="(tab, index) in paymentTabs" :key="index"
+                                        :value="tab.method">
+                                        <AccordionHeader>
+                                            <div class="flex flex-row items-center">
+                                                <RadioButton v-model="paymentSelect" :inputId="tab.method"
+                                                    name="dynamic" :value="tab.method" />
+                                                <label class="ml-2">{{ tab.method }}</label>
+                                                <IconsPayments :paymentMethod="tab.method" class="mx-2" />
+                                            </div>
+                                        </AccordionHeader>
+                                        <AccordionContent>
+                                            <p class="m-0">
+                                                {{ tab.description }}
+                                            </p>
+
+                                        </AccordionContent>
+                                    </AccordionPanel>
+                                </Accordion>
                             </div>
                         </StepPanel>
 

@@ -1,5 +1,6 @@
 <script setup>
 import Button from 'primevue/button';
+import Divider from 'primevue/divider';
 
 const formatCurrency = (value) => {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
@@ -7,6 +8,8 @@ const formatCurrency = (value) => {
 </script>
 <template>
     <div class="card">
+        <div class="font-semibold text-xl mb-4">Resume</div>
+        <Divider />
         <div class="py-1 px-1">
             <div> 3 Produtos</div>
             <div>
