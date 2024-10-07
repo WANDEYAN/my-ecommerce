@@ -4,6 +4,7 @@ import Accordion from 'primevue/accordion';
 import AccordionContent from 'primevue/accordioncontent';
 import AccordionHeader from 'primevue/accordionheader';
 import AccordionPanel from 'primevue/accordionpanel';
+import InputText from 'primevue/inputtext';
 import Step from 'primevue/step';
 import StepList from 'primevue/steplist';
 import StepPanel from 'primevue/steppanel';
@@ -31,6 +32,14 @@ const paymentTabs = ref([
     }
 ]);
 const paymentSelect = ref(null);
+const formCreditCard = ref({
+    numberCard: null,
+    name: null,
+    dateExpire: null,
+    cvv: null,
+    isDefaultPayment: false,
+    cpf: null
+})
 
 onMounted(() => {
     CartService.getItemsCart().then((data) => {
@@ -126,6 +135,68 @@ const formatCurrency = (value) => {
                                                 {{ tab.description }}
                                             </p>
 
+                                            <div v-if="tab.method == 'CREDIT CARD'" class="mt-3">
+                                                <div>
+                                                    Flags cards
+                                                </div>
+                                                <Divider />
+                                                <div class="mt-8 formCreditCard">
+                                                    <div class="flex flex-col gap-8 w-full">
+                                                        <div class="row">
+                                                            <FloatLabel>
+                                                                <InputMask id="numCard"
+                                                                    v-model="formCreditCard.numberCard"
+                                                                    mask="9999999999999999"
+                                                                    placeholder="9999 9999 9999 9999" />
+                                                                <label for="numCard">NUMBER CARD</label>
+                                                            </FloatLabel>
+                                                        </div>
+                                                        <div class="row">
+                                                            <FloatLabel>
+                                                                <InputText id="nameOwnerCard" type="text"
+                                                                    v-model="formCreditCard.name" placeholder="Name" />
+                                                                <label for="nameOwnerCard">NAME ON CARD</label>
+                                                            </FloatLabel>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="flex flex-row gap-x-4">
+                                                                <div class="col">
+                                                                    <FloatLabel>
+                                                                        <DatePicker id="dateExpire"
+                                                                            dateFormat="dd/mm/yy" :showIcon="true"
+                                                                            :showButtonBar="true"
+                                                                            v-model="formCreditCard.dateExpire">
+                                                                        </DatePicker>
+                                                                        <label for="dateExpire">DATE EXPIRE</label>
+                                                                    </FloatLabel>
+                                                                </div>
+                                                                <div class="col">
+                                                                    <FloatLabel>
+                                                                        <InputMask id="cvv" mask="999"
+                                                                            v-model="formCreditCard.cvv"
+                                                                            placeholder="999" />
+                                                                        <label for="cvv">CVV</label>
+                                                                    </FloatLabel>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <FloatLabel>
+                                                                <InputMask id="cpf" mask="999.999.999-99"
+                                                                    v-model="formCreditCard.cpf"
+                                                                    placeholder="999.999.999-99" />
+                                                                <label for="cpf">CPF</label>
+                                                            </FloatLabel>
+                                                        </div>
+                                                        <div class="row">
+                                                            <Checkbox id="isDefault" :value="true"
+                                                                v-model="formCreditCard.isDefaultPayment" />
+                                                            <label for="isDefault" class="ml-2">My payment
+                                                                default</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </AccordionContent>
                                     </AccordionPanel>
                                 </Accordion>
@@ -141,3 +212,8 @@ const formatCurrency = (value) => {
         </div>
     </div>
 </template>
+<style>
+.formCreditCard input {
+    width: 100%;
+}
+</style>
