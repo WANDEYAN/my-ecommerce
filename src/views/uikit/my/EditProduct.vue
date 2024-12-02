@@ -73,7 +73,7 @@ const dropdownItem = ref(null);
                     </div>
                 </div>
                 <div>
-                    <Button type="submit" class="m-3">Save</Button>
+                    <Button type="submit" class="my-3">Save</Button>
                 </div>
             </div>
         </div>
