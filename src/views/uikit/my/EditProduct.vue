@@ -1,12 +1,21 @@
 <script setup>
+import { CategoryService } from "@/service/CategoryService";
 import { useToast } from "primevue/usetoast";
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const toast = useToast();
+const dropdownCategory = ref(null);
 
 const onAdvancedUpload = () => {
     toast.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded', life: 3000 });
 };
+
+onMounted(() => {
+    CategoryService.getCategorys().then((data) => {
+        dropdownCategory.value = data;
+        console.log(data);
+    })
+})
 
 //botão deve passar props
 defineProps({
@@ -60,7 +69,7 @@ const dropdownItem = ref(null);
                 <div class="flex flex-col md:flex-row gap-4">
                     <div class="flex flex-wrap gap-2 w-full">
                         <label for="category">Category</label>
-                        <Select id="category" v-model="dropdownItem" :options="dropdownItems" optionLabel="name"
+                        <Select id="category" v-model="dropdownItem" :options="dropdownCategory" optionLabel="category"
                             placeholder="Select One" class="w-full"></Select>
                     </div>
                     <div class="flex flex-wrap gap-2 w-full">
