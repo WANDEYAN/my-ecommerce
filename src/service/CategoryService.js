@@ -24,7 +24,7 @@ export const CategoryService = {
           ]
     },
 
-    getCategorys(){
+    getCategories(){
         return Promise.resolve(this.getMockData());
     }
 };
