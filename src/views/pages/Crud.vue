@@ -296,7 +296,7 @@ function clearImage() {
 
                 <div class="field">
                     <label for="imageUpload" class="block font-bold mb-3">Product Image</label>
-                    <FileUpload ref="fileUploadRef" mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000"
+                    <FileUpload ref="fileUploadRef" mode="basic" name="demo[]" accept="image/*" :maxFileSize="1500000"
                         @select="onFileSelect" :auto="false" chooseLabel="Choose"
                         uploadLabel="Upload (Not actually uploading yet)" cancelLabel="Cancel" />
                     <Button v-if="previewImageUrl || product.image" label="Clear Image" icon="pi pi-times" class="mt-2"
@@ -316,8 +316,8 @@ function clearImage() {
 
                 <div>
                     <label for="category" class="block font-bold mb-3">Category</label>
-                    <Select id="category" v-model="product.category" :options="categories" optionLabel="category"
-                        placeholder="Select a category" fluid></Select>
+                    <Select id="category" v-model="product.category" :options="categories" optionValue="category"
+                        optionLabel="category" placeholder="Select a category" fluid></Select>
                 </div>
 
                 <div class="grid grid-cols-12 gap-4">
