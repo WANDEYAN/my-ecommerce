@@ -11,7 +11,7 @@ const onAdvancedUpload = () => {
 };
 
 onMounted(() => {
-    CategoryService.getCategorys().then((data) => {
+    CategoryService.getCategories().then((data) => {
         dropdownCategory.value = data;
         console.log(data);
     })
