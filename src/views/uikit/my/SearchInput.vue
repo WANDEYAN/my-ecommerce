@@ -7,6 +7,6 @@ const value1 = ref(null);
 <template>
     <IconField>
         <InputIcon class="pi pi-search" />
-        <InputText v-model="value1" placeholder="Search product" />
+        <InputText class="w-full" v-model="value1" placeholder="Search product" />
     </IconField>
 </template>
