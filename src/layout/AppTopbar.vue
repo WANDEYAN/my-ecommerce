@@ -33,7 +33,7 @@ const { onMenuToggle, toggleDarkMode, isDarkTheme } = useLayout();
                 <span>E-commerCe</span>
             </router-link>
         </div>
-        <div>
+        <div class="flex-1 mx-4">
             <SearchInput></SearchInput>
         </div>
         <div class="layout-topbar-actions">
