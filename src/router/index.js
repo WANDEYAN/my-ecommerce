@@ -14,6 +14,11 @@ const router = createRouter({
                     component: () => import('@/views/Home.vue')
                 },
                 {
+                    path: '/password',
+                    name: 'password',
+                    component: () => import('@/views/uikit/my/ChangePassword.vue')
+                },
+                {
                     path: '/edit/product',
                     name: 'edit',
                     component: () => import('@/views/uikit/my/EditProduct.vue')
