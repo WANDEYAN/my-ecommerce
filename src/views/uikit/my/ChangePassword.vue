@@ -61,7 +61,7 @@ const validateCurrentPassword = () => {
         toast.add({ severity: 'success', summary: 'Sucesso', detail: 'Password has been changed successfully', life: 3000 });
         resetForm();
     } else {
-        toast.add({ severity: 'error', summary: 'Erro', detail: 'Senha atual incorreta.', life: 3000 });
+        toast.add({ severity: 'error', summary: 'Erro', detail: 'Current password id incorrect', life: 3000 });
     }
     currentPasswordDialogVisible.value = false;
 };
@@ -83,7 +83,7 @@ const cancelPasswordChange = () => {
 <template>
     <div class="flex justify-center items-start min-h-screen p-6 bg-surface-50">
         <Toast />
-        <Card class="w-full max-w-2xl shadow-xl rounded-lg overflow-hidden">
+        <Card class="w-full shadow-xl rounded-lg overflow-hidden">
             <template #title>
                 <div class="flex items-center gap-3 text-2xl font-bold text-gray-800">
                     <i class="pi pi-user-edit text-primary-500"></i>
@@ -92,7 +92,6 @@ const cancelPasswordChange = () => {
             </template>
             <template #content>
                 <div class="p-fluid flex flex-col gap-6">
-                    <!-- Seção de Informações do Usuário -->
                     <div class="border-b pb-4 mb-4 border-surface-200">
                         <div class="flex items-center gap-3 mb-2">
                             <i class="pi pi-id-card text-lg text-surface-600"></i>
@@ -144,7 +143,7 @@ const cancelPasswordChange = () => {
             </template>
         </Card>
 
-        <Dialog v-model:visible="currentPasswordDialogVisible" modal header="Confirme Sua Senha Atual"
+        <Dialog v-model:visible="currentPasswordDialogVisible" modal header="Confirm your current password"
             :style="{ width: '30rem' }" :draggable="false" :closable="false">
             <div class="flex flex-col gap-4">
                 <p class="text-surface-700">Please, enter your current password to confirm the change.</p>
