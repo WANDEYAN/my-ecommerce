@@ -1,5 +1,5 @@
 <script setup>
-import { CartService } from '@/service/CartService';
+import { CartService } from '@/service/CartService.js';
 import Accordion from 'primevue/accordion';
 import AccordionContent from 'primevue/accordioncontent';
 import AccordionHeader from 'primevue/accordionheader';
@@ -10,12 +10,15 @@ import StepList from 'primevue/steplist';
 import StepPanel from 'primevue/steppanel';
 import StepPanels from 'primevue/steppanels';
 import Stepper from 'primevue/stepper';
+import { useToast } from 'primevue/usetoast';
 import { onMounted, ref } from 'vue';
 import BuyBox from './BuyBox.vue';
 import IconsPayments from './IconsPayments.vue';
 import InputNumberAmount from './InputNumberAmount.vue';
 import TitleProduct from './TitleProduct.vue';
 
+
+const toast = useToast();
 const shoppingCartItems = ref([]);
 const paymentTabs = ref([
     {
@@ -39,13 +42,53 @@ const formCreditCard = ref({
     cvv: null,
     isDefaultPayment: false,
     cpf: null
-})
+});
+
+const currentStepIndex = ref('1');
 
 onMounted(() => {
     CartService.getItemsCart().then((data) => {
         shoppingCartItems.value = data
     });
 });
+
+function validationNextStep() {
+    let isValid = true
+    let mensage = '';
+    if (currentStepIndex.value == 1) {
+        if (shoppingCartItems.value.length == 0) {
+            isValid = false;
+            mensage = 'Your cart is empty';
+        }
+    } else if (currentStepIndex.value == 2) {
+        // Add validation for identification step
+    } else if (currentStepIndex.value == 3) {
+        // Add validation for address step
+    } else if (currentStepIndex.value == 4) {
+        //Add validation for payment step
+    }
+    if (!isValid) {
+        toast.add({
+            severity: 'error',
+            summary: 'Validation Error',
+            detail: mensage,
+            life: 3000
+        });
+    }
+    return isValid;
+}
+
+const goToNextStep = (activateCallback, targetSepIndex) => {
+    if (validationNextStep()) {
+        activateCallback(targetSepIndex);
+        currentStepIndex.value = targetSepIndex;
+    }
+};
+
+const goToPreviousStep = (activateCallback, targetSepIndex) => {
+    activateCallback(targetSepIndex);
+    currentStepIndex.value = targetSepIndex;
+};
 
 const formatCurrency = (value) => {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
@@ -99,22 +142,38 @@ const formatCurrency = (value) => {
                                                         </div>
                                                     </div>
                                                     <span class="text-xl font-semibold">{{ formatCurrency(item.price)
-                                                        }}</span>
+                                                    }}</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </template>
                             </DataView>
+                            <div class="flex pt-6 justify-end">
+                                <Button label="Next" icon="pi pi-arrow-right" iconPos="right"
+                                    @click="goToNextStep(activateCallback, '2')" />
+                            </div>
                         </StepPanel>
                         <StepPanel v-slot="{ activateCallback }" value="2">
                             <div>
                                 Panel 2
                             </div>
+                            <div class="flex pt-6 justify-between">
+                                <Button label="Back" severity="secondary" icon="pi pi-arrow-left"
+                                    @click="goToPreviousStep(activateCallback, '1')" />
+                                <Button label="Next" icon="pi pi-arrow-right" iconPos="right"
+                                    @click="goToNextStep(activateCallback, '3')" />
+                            </div>
                         </StepPanel>
                         <StepPanel v-slot="{ activateCallback }" value="3">
                             <div>
                                 Panel 3
+                            </div>
+                            <div class="flex pt-6 justify-between">
+                                <Button label="Back" severity="secondary" icon="pi pi-arrow-left"
+                                    @click="goToPreviousStep(activateCallback, '2')" />
+                                <Button label="Next" icon="pi pi-arrow-right" iconPos="right"
+                                    @click="goToNextStep(activateCallback, '4')" />
                             </div>
                         </StepPanel>
                         <StepPanel v-slot="{ activateCallback }" value="4">
@@ -201,8 +260,11 @@ const formatCurrency = (value) => {
                                     </AccordionPanel>
                                 </Accordion>
                             </div>
+                            <div class="flex pt-6 justify-between">
+                                <Button label="Back" severity="secondary" icon="pi pi-arrow-left"
+                                    @click="goToPreviousStep(activateCallback, '3')" />
+                            </div>
                         </StepPanel>
-
                     </StepPanels>
                 </Stepper>
             </div>
