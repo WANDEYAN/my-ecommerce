@@ -43,6 +43,14 @@ const formCreditCard = ref({
     isDefaultPayment: false,
     cpf: null
 });
+const checkoutData = ref({
+    client: 'Joao',
+    address: '123 Flower Street, São Paulo, SP',
+    paymentMethod: 'Pix',
+    subtotal: 200,
+    shipping: 34,
+    productsCout: 3
+});
 
 const currentStepIndex = ref('1');
 
@@ -142,7 +150,7 @@ const formatCurrency = (value) => {
                                                         </div>
                                                     </div>
                                                     <span class="text-xl font-semibold">{{ formatCurrency(item.price)
-                                                    }}</span>
+                                                        }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -270,7 +278,7 @@ const formatCurrency = (value) => {
             </div>
         </div>
         <div class="col">
-            <BuyBox />
+            <BuyBox :resumeOrder="checkoutData"></BuyBox>
         </div>
     </div>
 </template>

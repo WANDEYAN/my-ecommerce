@@ -1,6 +1,6 @@
 <script setup>
 import Button from 'primevue/button';
-import { computed } from 'vue';
+import { computed, defineProps } from 'vue';
 
 
 const props = defineProps({
@@ -23,7 +23,7 @@ const formatCurrency = (value) => {
 };
 
 const total = computed(() => {
-    return resumeOrder.subtotal + resumeOrder.shipping;
+    return props.resumeOrder.subtotal + props.resumeOrder.shipping;
 })
 </script>
 <template>
@@ -38,15 +38,15 @@ const total = computed(() => {
         <div class="py-3">
             <div class="mb-3">
                 <div class="font-semibold mb-1">Enviar para:</div>
-                <div class="text-700">{{ resumeOrder.client }}</div>
-                <div class="text-700">{{ resumeOrder.address }}</div>
+                <div class="text-700">{{ props.resumeOrder.client }}</div>
+                <div class="text-700">{{ props.resumeOrder.address }}</div>
             </div>
             <div>
                 <div class="font-semibold mb-1">Método de Pagamento:</div>
                 <div class="text-700 flex align-items-center">
                     <!-- Ícone para o método de pagamento, melhora o visual -->
                     <i class="pi pi-qrcode mr-2"></i>
-                    <span>{{ resumeOrder.paymentMethod }}</span>
+                    <span>{{ props.resumeOrder.paymentMethod }}</span>
                 </div>
             </div>
         </div>
@@ -58,13 +58,13 @@ const total = computed(() => {
         <div class="py-3">
             <!-- Subtotal -->
             <div class="flex justify-content-between mb-2">
-                <span class="text-700">Subtotal ({{ resumeOrder.productsCout }} produtos)</span>
-                <span class="text-900 font-medium">{{ formatCurrency(resumeOrder.subtotal) }}</span>
+                <span class="text-700">Subtotal ({{ props.resumeOrder.productsCout }} produtos)</span>
+                <span class="text-900 font-medium">{{ formatCurrency(props.resumeOrder.subtotal) }}</span>
             </div>
             <!-- Frete -->
             <div class="flex justify-content-between mb-3">
                 <span class="text-700">Frete</span>
-                <span class="text-900 font-medium">{{ formatCurrency(resumeOrder.shipping) }}</span>
+                <span class="text-900 font-medium">{{ formatCurrency(props.resumeOrder.shipping) }}</span>
             </div>
 
             <!-- Linha do Total -->
