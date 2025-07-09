@@ -11,7 +11,7 @@ import StepPanel from 'primevue/steppanel';
 import StepPanels from 'primevue/steppanels';
 import Stepper from 'primevue/stepper';
 import { useToast } from 'primevue/usetoast';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import BuyBox from './BuyBox.vue';
 import IconsPayments from './IconsPayments.vue';
 import InputNumberAmount from './InputNumberAmount.vue';
@@ -44,15 +44,18 @@ const formCreditCard = ref({
     cpf: null
 });
 const checkoutData = ref({
-    client: 'Joao',
-    address: '123 Flower Street, São Paulo, SP',
-    paymentMethod: 'Pix',
-    subtotal: 200,
-    shipping: 34,
-    productsCout: 3
+    client: '',
+    address: '',
+    paymentMethod: '',
+    subtotal: 0,
+    shipping: 0,
+    productsCout: 0
 });
 
 const currentStepIndex = ref('1');
+const finalCheckoutStep = computed(() => {
+    validationNextStep();
+});
 
 onMounted(() => {
     CartService.getItemsCart().then((data) => {
@@ -64,16 +67,18 @@ function validationNextStep() {
     let isValid = true
     let mensage = '';
     if (currentStepIndex.value == 1) {
-        if (shoppingCartItems.value.length == 0) {
+        if (shoppingCartItems.value.length > 0) {
+            checkoutData.value.productsCout = shoppingCartItems.value.length;
+        } else {
             isValid = false;
             mensage = 'Your cart is empty';
         }
     } else if (currentStepIndex.value == 2) {
-        // Add validation for identification step
+        checkoutData.value.client = 'João da Silva';
     } else if (currentStepIndex.value == 3) {
-        // Add validation for address step
+        checkoutData.value.address = '123 Flower Street, São Paulo, SP';
     } else if (currentStepIndex.value == 4) {
-        //Add validation for payment step
+        checkoutData.value.paymentMethod = paymentSelect.value;
     }
     if (!isValid) {
         toast.add({
@@ -192,7 +197,7 @@ const formatCurrency = (value) => {
                                         <AccordionHeader>
                                             <div class="flex flex-row items-center">
                                                 <RadioButton v-model="paymentSelect" :inputId="tab.method"
-                                                    name="dynamic" :value="tab.method" />
+                                                    @click="finalCheckoutStep" name="dynamic" :value="tab.method" />
                                                 <label class="ml-2">{{ tab.method }}</label>
                                                 <IconsPayments :paymentMethod="tab.method" class="mx-2" />
                                             </div>
