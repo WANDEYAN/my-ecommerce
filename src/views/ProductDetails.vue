@@ -3,8 +3,8 @@ import { PhotoService } from '@/service/PhotoService';
 import { ProductService } from '@/service/ProductService';
 import { RatingService } from '@/service/RatingService';
 import { onMounted, ref } from 'vue';
-import BuyButton from './BuyButton.vue';
-import FavorityButton from './FavorityButton.vue';
+import BuyButton from './uikit/BuyButton.vue';
+import FavorityButton from './uikit/FavorityButton.vue';
 
 const products = ref([]);
 const images = ref([]);

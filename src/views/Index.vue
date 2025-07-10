@@ -1,5 +1,5 @@
 <script setup>
-    import ListDoc from './uikit/ListDoc.vue';
+import ListDoc from './uikit/of_template/ListDoc.vue';
 </script>
 
 <template>
