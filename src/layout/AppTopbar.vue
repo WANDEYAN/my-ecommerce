@@ -1,6 +1,6 @@
 <script setup>
 import { useLayout } from '@/layout/composables/layout';
-import SearchInput from '@/views/uikit/my/SearchInput.vue';
+import SearchInput from '@/views/uikit/SearchInput.vue';
 import AppConfigurator from './AppConfigurator.vue';
 
 const { onMenuToggle, toggleDarkMode, isDarkTheme } = useLayout();

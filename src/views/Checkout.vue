@@ -12,10 +12,10 @@ import StepPanels from 'primevue/steppanels';
 import Stepper from 'primevue/stepper';
 import { useToast } from 'primevue/usetoast';
 import { computed, onMounted, ref } from 'vue';
-import BuyBox from './BuyBox.vue';
-import IconsPayments from './IconsPayments.vue';
-import InputNumberAmount from './InputNumberAmount.vue';
-import TitleProduct from './TitleProduct.vue';
+import BuyBox from './uikit/BuyBox.vue';
+import IconsPayments from './uikit/IconsPayments.vue';
+import InputNumberAmount from './uikit/InputNumberAmount.vue';
+import TitleProduct from './uikit/TitleProduct.vue';
 
 
 const toast = useToast();
@@ -160,7 +160,7 @@ const formatCurrency = (value) => {
                                                     </div>
                                                     <span class="text-xl font-semibold">{{ formatCurrency(item.price *
                                                         item.quantity)
-                                                    }}</span>
+                                                        }}</span>
                                                 </div>
                                             </div>
                                         </div>
