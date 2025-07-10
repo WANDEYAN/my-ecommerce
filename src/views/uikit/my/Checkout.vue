@@ -47,10 +47,13 @@ const checkoutData = ref({
     client: '',
     address: '',
     paymentMethod: '',
-    subtotal: 0,
     shipping: 0,
-    productsCout: 0
+    productsCount: 0
 });
+
+const subtotal = computed(() =>
+    shoppingCartItems.value.reduce((acc, item) => acc + (item.price * item.quantity), 0)
+);
 
 const currentStepIndex = ref('1');
 const finalCheckoutStep = computed(() => {
@@ -68,7 +71,7 @@ function validationNextStep() {
     let mensage = '';
     if (currentStepIndex.value == 1) {
         if (shoppingCartItems.value.length > 0) {
-            checkoutData.value.productsCout = shoppingCartItems.value.length;
+            checkoutData.value.productsCount = shoppingCartItems.value.length;
         } else {
             isValid = false;
             mensage = 'Your cart is empty';
@@ -77,6 +80,7 @@ function validationNextStep() {
         checkoutData.value.client = 'João da Silva';
     } else if (currentStepIndex.value == 3) {
         checkoutData.value.address = '123 Flower Street, São Paulo, SP';
+        checkoutData.value.shipping = 10.00;
     } else if (currentStepIndex.value == 4) {
         checkoutData.value.paymentMethod = paymentSelect.value;
     }
@@ -146,7 +150,7 @@ const formatCurrency = (value) => {
                                                         </div>
                                                     </div>
                                                     <div class="flex flex-col md:items-end gap-8">
-                                                        <InputNumberAmount />
+                                                        <InputNumberAmount v-model="item.quantity" />
                                                     </div>
                                                     <div class="flex flex-col md:items-end gap-8">
                                                         <div class="flex flex-row-reverse md:flex-row gap-2">
@@ -154,8 +158,9 @@ const formatCurrency = (value) => {
                                                                 severity="danger" text />
                                                         </div>
                                                     </div>
-                                                    <span class="text-xl font-semibold">{{ formatCurrency(item.price)
-                                                        }}</span>
+                                                    <span class="text-xl font-semibold">{{ formatCurrency(item.price *
+                                                        item.quantity)
+                                                    }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -283,7 +288,7 @@ const formatCurrency = (value) => {
             </div>
         </div>
         <div class="col">
-            <BuyBox :resumeOrder="checkoutData"></BuyBox>
+            <BuyBox :resumeOrder="checkoutData" :subtotal="subtotal"></BuyBox>
         </div>
     </div>
 </template>

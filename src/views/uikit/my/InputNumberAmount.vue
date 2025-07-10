@@ -1,7 +1,20 @@
 <script setup>
-import { ref } from "vue";
+import { computed } from "vue";
 
-const inputNumberValue = ref(1);
+const props = defineProps({
+    modelValue: {
+        type: Number,
+        default: 1
+    }
+});
+
+const emit = defineEmits(["update:modelValue"]);
+
+const inputNumberValue = computed({
+    get: () => props.modelValue,
+    set: (value) => emit("update:modelValue", value)
+});
+
 </script>
 <template>
     <div class="py-4 flex" style="align-items: center;">

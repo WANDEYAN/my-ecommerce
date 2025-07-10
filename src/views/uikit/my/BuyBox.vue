@@ -1,6 +1,7 @@
 <script setup>
 import Button from 'primevue/button';
-import { computed, defineProps } from 'vue';
+import { defineProps } from 'vue';
+import IconsPayments from './IconsPayments.vue';
 
 
 const props = defineProps({
@@ -11,10 +12,14 @@ const props = defineProps({
             client: '',
             address: '',
             paymentMethod: '',
-            subtotal: 0,
             shipping: 0,
-            productsCout: 0
+            productsCount: 0
         })
+    },
+    subtotal: {
+        type: Number,
+        required: true,
+        default: 0
     }
 });
 
@@ -22,9 +27,6 @@ const formatCurrency = (value) => {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 };
 
-const total = computed(() => {
-    return props.resumeOrder.subtotal + props.resumeOrder.shipping;
-})
 </script>
 <template>
     <div class="card">
@@ -43,9 +45,9 @@ const total = computed(() => {
             </div>
             <div>
                 <div v-if="props.resumeOrder.paymentMethod" class="font-semibold mb-1">Método de Pagamento:</div>
-                <div class="text-700 flex align-items-center">
+                <div class="text-700 flex items-center gap-2">
                     <!-- Ícone para o método de pagamento, melhora o visual -->
-                    <i v-if="props.resumeOrder.paymentMethod" class="pi pi-qrcode mr-2"></i>
+                    <IconsPayments :paymentMethod="props.resumeOrder.paymentMethod" />
                     <span v-if="props.resumeOrder.paymentMethod">{{ props.resumeOrder.paymentMethod }}</span>
                 </div>
             </div>
@@ -57,16 +59,17 @@ const total = computed(() => {
         <!-- Seção de Resumo Financeiro -->
         <div class="py-3">
             <!-- Subtotal -->
-            <div class="flex justify-content-between mb-2">
-                <span v-if="props.resumeOrder.productsCout > 0" class="text-700">Subtotal ({{
-                    props.resumeOrder.productsCout }} produtos)</span>
-                <span v-if="props.resumeOrder.productsCout > 0" class="text-900 font-medium">{{
-                    formatCurrency(props.resumeOrder.subtotal) }}</span>
+            <div class="flex justify-content-between mb-2 whitespace-nowrap">
+                <span>Subtotal</span>
+                <span v-if="props.resumeOrder.productsCount > 0" class="text-700"> ({{
+                    props.resumeOrder.productsCount }} produtos)</span>
+                <span v-if="props.resumeOrder.productsCount > 0" class="text-900 font-medium">{{
+                    formatCurrency(props.subtotal) }}</span>
             </div>
             <!-- Frete -->
             <div class="flex justify-content-between mb-3">
-                <span v-if="props.resumeOrder.productsCout > 0" class="text-700">Frete</span>
-                <span v-if="props.resumeOrder.productsCout > 0" class="text-900 font-medium">{{
+                <span v-if="props.resumeOrder.productsCount > 0" class="text-700">Frete</span>
+                <span v-if="props.resumeOrder.productsCount > 0" class="text-900 font-medium">{{
                     formatCurrency(props.resumeOrder.shipping) }}</span>
             </div>
 
@@ -75,7 +78,8 @@ const total = computed(() => {
                 <div class="flex justify-content-between">
                     <span class="font-bold text-lg">Total</span>
                     <!-- O valor total é a informação mais importante -->
-                    <span class="font-bold text-lg text-primary">{{ formatCurrency(total) }}</span>
+                    <span class="font-bold text-lg text-primary">{{ formatCurrency(props.subtotal +
+                        props.resumeOrder.shipping) }}</span>
                 </div>
             </div>
         </div>
