@@ -2,7 +2,9 @@
 import { ProductService } from '@/service/ProductService';
 import { onMounted, ref } from 'vue';
 
+
 const products = ref(null);
+const dataTest = ref(null);
 const picklistProducts = ref(null);
 const orderlistProducts = ref(null);
 const options = ref(['list', 'grid']);
@@ -14,6 +16,27 @@ onMounted(() => {
         picklistProducts.value = [data, []];
         orderlistProducts.value = data;
     });
+
+        fetch('https://9000-firebase-api-ecommerce-1753818325220.cluster-4xpux6pqdzhrktbhjf2cumyqtg.cloudworkstations.dev/products/1', {
+    method: 'GET',
+    headers: {
+        'accept': '*/*',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcGktZWNvbW1lcmNlIiwic3ViIjoidGVzdC5wcmV2aWV3QGV4YW1wbGUuY29tIiwiZXhwIjoxNzU2NTIwNTI5fQ.HggE0McY9QNKgj14l2n1H5Uh9COZIfsrOW2-4VG7bWM'
+    }
+    })
+    .then(response => {
+    if (!response.ok) {
+        throw new Error('Erro na requisição: ' + response.status);
+    }
+    return response.json(); // ou response.text() dependendo do tipo de resposta
+    })
+    .then(data => {
+    console.log('Resposta do backend:', data);
+    })
+    .catch(error => {
+    console.error('Erro ao fazer a requisição:', error);
+    });
+
 });
 
 const sortKey = ref();

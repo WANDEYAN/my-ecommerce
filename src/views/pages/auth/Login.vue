@@ -1,10 +1,24 @@
 <script setup>
 import FloatingConfigurator from '@/components/FloatingConfigurator.vue';
+import router from '@/router';
+import { handlerLogin } from '@/service/AuthService';
 import { ref } from 'vue';
 
 const email = ref('');
 const password = ref('');
 const checked = ref(false);
+const showError = ref(false);
+
+const handlerLoginClick = async () => {
+   const authenticated = await handlerLogin(email.value, password.value);
+   if(authenticated){
+    showError.value = false;
+    router.push('/');
+   }else{
+    showError.value = true;
+   }
+}
+
 </script>
 
 <template>
@@ -22,6 +36,9 @@ const checked = ref(false);
                     class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
                 <InputText id="email1" type="text" placeholder="Email address" class="w-full md:w-[30rem] mb-8"
                     v-model="email" />
+                    <div v-if="showError" class="p-3 mb-3 text-center" style="background-color: #ffcdd2; color: #c63737; border-radius: 8px;">
+                        Login our password invalids.
+                    </div>
 
                 <label for="password1"
                     class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Password</label>
@@ -36,7 +53,7 @@ const checked = ref(false);
                     <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot
                         password?</span>
                 </div>
-                <Button label="Sign In" class="w-full" as="router-link" to="/"></Button>
+                <Button label="Sign In" class="w-full" @click="handlerLoginClick"></Button>
             </div>
         </div>
     </div>
