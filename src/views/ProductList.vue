@@ -9,7 +9,6 @@ const layout = ref('list');
 
 onMounted(async () => {
     products.value = await ProductService.getProducts();
-    
 });
 
 const baseUrlImage = import.meta.env.VITE_API_BASE_URL;
