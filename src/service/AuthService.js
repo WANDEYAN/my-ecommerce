@@ -1,3 +1,4 @@
+import router from '@/router';
 import axios from 'axios';
 
 const apiClient = axios.create({
@@ -16,7 +17,9 @@ apiClient.interceptors.request.use((config) => {
   return config;
   },
   (error) => {
-    return Promise.reject(error);
+    //console.log(error);
+    router.push("/auth/login");
+    throw new Error("Invalid authentication.");
   }
 );
 /**
