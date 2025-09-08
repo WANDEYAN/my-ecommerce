@@ -1,3 +1,4 @@
+import router from "@/router";
 import apiClient from "./AuthService";
 
 export const ProductService = {
@@ -11,7 +12,19 @@ export const ProductService = {
               });
             return response.data.content;
         }catch(error){
-            console.log("Error searching for products",error)
+            if(error.response){
+                console.log("Error searching for products",error);
+                const status = error.response.status;
+                if(status === 403 || status === 401){
+                    console.log("error 403 or 401");
+                    router.push("/auth/login");
+                }else{
+                    router.push({path: "/auth/error", query: {status: status}});
+                }
+            }else{
+                console.log("Error searching for products",error);
+                router.push({path: "/auth/error", query: {status: "NETWORK_ERROR"}});
+            }
         }
     }
 };

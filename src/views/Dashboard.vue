@@ -3,11 +3,12 @@ import { ProductService } from '@/service/ProductService';
 import { onMounted, ref } from 'vue';
 
 const products = ref([]);
+const baseUrlImage = import.meta.env.VITE_API_BASE_URL;
 
 
 onMounted(() => {
-    ProductService.getProductsSmall().then((data) => {
-        products.value = data
+    ProductService.getProducts().then((data) => {
+        products.value = data;
     });
 });
 
@@ -88,7 +89,7 @@ const formatCurrency = (value) => {
                 <DataTable :value="products" :rows="5" :paginator="true" responsiveLayout="scroll">
                     <Column style="width: 15%" header="Image">
                         <template #body="slotProps">
-                            <img :src="`https://primefaces.org/cdn/primevue/images/product/${slotProps.data.image}`"
+                            <img :src="baseUrlImage + `/uploads/${slotProps.data.image}`"
                                 :alt="slotProps.data.image" width="50" class="shadow" />
                         </template>
                     </Column>

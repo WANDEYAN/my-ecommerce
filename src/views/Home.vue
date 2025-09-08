@@ -73,12 +73,6 @@ const toggleTheme = () => {
 onMounted(() => {
     // Aqui você pode adicionar lógica para carregar dados reais de categorias e produtos
     // de uma API, em vez de usar os dados simulados.
-    ProductService.getProductsSmall().then((data) => {
-        featuredProducts.value = data.slice(0, 8); // Exemplo: pega os primeiros 8 produtos
-    }).catch((error) => {
-        console.error('Erro ao carregar produtos:', error);
-        toast.add({ severity: 'error', summary: 'Erro', detail: 'Não foi possível carregar os produtos.', life: 3000 });
-    });
 });
 </script>
 

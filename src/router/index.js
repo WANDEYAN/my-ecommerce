@@ -183,9 +183,10 @@ router.beforeEach((to, from, next) => {
     if(authRequired && !isLoggedIn){
         return next("/auth/login");
     }
-    else if(isLoggedIn && to.path === '/auth/login'){
-        next("/");
-    }else{
+    // else if(isLoggedIn && to.path === '/auth/login'){
+    //     next("/auth/access");
+    // }
+    else{
         next();
     }
 });

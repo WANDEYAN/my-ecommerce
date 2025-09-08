@@ -34,10 +34,10 @@ export async function handlerLogin(email, password){
 
       if(token){
           localStorage.setItem("authToken", token);
-          console.log("Passou aqui no foi")
+          console.log("Passou aqui no foi");
           return true;
         }
-        console.log("Passou aqui no não foi")
+        console.log("Passou aqui no não foi");
         return false;
       }catch(error){
         if (error.response) {
