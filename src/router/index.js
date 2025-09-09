@@ -175,4 +175,20 @@ const router = createRouter({
     ]
 });
 
+router.beforeEach((to, from, next) => {
+    const publicPages = ["/auth/login","/home","/landing"];
+    const authRequired = !publicPages.includes(to.path);
+    const isLoggedIn = localStorage.getItem("authToken");
+
+    if(authRequired && !isLoggedIn){
+        return next("/auth/login");
+    }
+    // else if(isLoggedIn && to.path === '/auth/login'){
+    //     next("/auth/access");
+    // }
+    else{
+        next();
+    }
+});
+
 export default router;

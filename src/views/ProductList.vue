@@ -4,41 +4,14 @@ import { onMounted, ref } from 'vue';
 
 
 const products = ref(null);
-const dataTest = ref(null);
-const picklistProducts = ref(null);
-const orderlistProducts = ref(null);
 const options = ref(['list', 'grid']);
 const layout = ref('list');
 
-onMounted(() => {
-    ProductService.getProductsSmall().then((data) => {
-        products.value = data.slice(0, 6);
-        picklistProducts.value = [data, []];
-        orderlistProducts.value = data;
-    });
-
-        fetch('https://9000-firebase-api-ecommerce-1753818325220.cluster-4xpux6pqdzhrktbhjf2cumyqtg.cloudworkstations.dev/products/1', {
-    method: 'GET',
-    headers: {
-        'accept': '*/*',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcGktZWNvbW1lcmNlIiwic3ViIjoidGVzdC5wcmV2aWV3QGV4YW1wbGUuY29tIiwiZXhwIjoxNzU2NTIwNTI5fQ.HggE0McY9QNKgj14l2n1H5Uh9COZIfsrOW2-4VG7bWM'
-    }
-    })
-    .then(response => {
-    if (!response.ok) {
-        throw new Error('Erro na requisição: ' + response.status);
-    }
-    return response.json(); // ou response.text() dependendo do tipo de resposta
-    })
-    .then(data => {
-    console.log('Resposta do backend:', data);
-    })
-    .catch(error => {
-    console.error('Erro ao fazer a requisição:', error);
-    });
-
+onMounted(async () => {
+    products.value = await ProductService.getProducts();
 });
 
+const baseUrlImage = import.meta.env.VITE_API_BASE_URL;
 const sortKey = ref();
 const sortOrder = ref();
 const sortField = ref();
@@ -104,7 +77,7 @@ function getSeverity(product) {
                                 :class="{ 'border-t border-surface': index !== 0 }">
                                 <div class="md:w-40 relative">
                                     <img class="block xl:block mx-auto rounded w-full"
-                                        :src="`https://primefaces.org/cdn/primevue/images/product/${item.image}`"
+                                        :src="baseUrlImage + `/uploads/${item.image}`"
                                         :alt="item.name" />
                                     <Tag :value="item.inventoryStatus" :severity="getSeverity(item)"
                                         class="absolute dark:!bg-surface-900" style="left: 4px; top: 4px"></Tag>
@@ -113,7 +86,7 @@ function getSeverity(product) {
                                     <div class="flex flex-row md:flex-col justify-between items-start gap-2">
                                         <div>
                                             <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{
-                                                item.category }}</span>
+                                                item.category.name }}</span>
                                             <div class="text-lg font-medium mt-2">{{ item.name }}</div>
                                         </div>
                                         <div class="bg-surface-100 p-1" style="border-radius: 30px">
@@ -154,7 +127,7 @@ function getSeverity(product) {
                                 <div class="bg-surface-50 flex justify-center rounded p-4">
                                     <div class="relative mx-auto">
                                         <img class="rounded w-full"
-                                            :src="`https://primefaces.org/cdn/primevue/images/product/${item.image}`"
+                                            :src="baseUrlImage + `/uploads/${item.image}`"
                                             :alt="item.name" style="max-width: 300px" />
                                         <Tag :value="item.inventoryStatus" :severity="getSeverity(item)"
                                             class="absolute dark:!bg-surface-900" style="left: 4px; top: 4px"></Tag>
@@ -164,7 +137,7 @@ function getSeverity(product) {
                                     <div class="flex flex-row justify-between items-start gap-2">
                                         <div>
                                             <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{
-                                                item.category }}</span>
+                                                item.category.name }}</span>
                                             <div class="text-lg font-medium mt-1">{{ item.name }}</div>
                                         </div>
                                         <div class="bg-surface-100 p-1" style="border-radius: 30px">

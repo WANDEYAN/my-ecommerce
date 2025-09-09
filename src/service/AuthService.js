@@ -1,3 +1,4 @@
+import router from '@/router';
 import axios from 'axios';
 
 const apiClient = axios.create({
@@ -16,7 +17,9 @@ apiClient.interceptors.request.use((config) => {
   return config;
   },
   (error) => {
-    return Promise.reject(error);
+    //console.log(error);
+    router.push("/auth/login");
+    throw new Error("Invalid authentication.");
   }
 );
 /**
@@ -31,10 +34,10 @@ export async function handlerLogin(email, password){
 
       if(token){
           localStorage.setItem("authToken", token);
-          console.log("Passou aqui no foi")
+          console.log("Passou aqui no foi");
           return true;
         }
-        console.log("Passou aqui no não foi")
+        console.log("Passou aqui no não foi");
         return false;
       }catch(error){
         if (error.response) {
