@@ -1,6 +1,7 @@
 <script setup>
 import { ProductService } from '@/service/ProductService';
 import { onMounted, ref } from 'vue';
+import { RouterLink } from 'vue-router';
 
 
 const products = ref(null);
@@ -75,19 +76,23 @@ function getSeverity(product) {
                         <div v-for="(item, index) in slotProps.items" :key="index">
                             <div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
                                 :class="{ 'border-t border-surface': index !== 0 }">
-                                <div class="md:w-40 relative">
-                                    <img class="block xl:block mx-auto rounded w-full"
-                                        :src="baseUrlImage + `/uploads/${item.image}`"
-                                        :alt="item.name" />
-                                    <Tag :value="item.inventoryStatus" :severity="getSeverity(item)"
-                                        class="absolute dark:!bg-surface-900" style="left: 4px; top: 4px"></Tag>
-                                </div>
+                                <router-link :to="'/products/' + item.id" >
+                                    <div class="md:w-40 relative">
+                                        <img class="block xl:block mx-auto rounded w-full"
+                                            :src="baseUrlImage + `/uploads/${item.image}`"
+                                            :alt="item.name" />
+                                        <Tag :value="item.inventoryStatus" :severity="getSeverity(item)"
+                                            class="absolute dark:!bg-surface-900" style="left: 4px; top: 4px"></Tag>
+                                    </div>
+                                </router-link>
                                 <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
                                     <div class="flex flex-row md:flex-col justify-between items-start gap-2">
                                         <div>
                                             <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{
                                                 item.category.name }}</span>
-                                            <div class="text-lg font-medium mt-2">{{ item.name }}</div>
+                                                <router-link :to="'/products/' + item.id">
+                                                    <div class="text-lg font-medium mt-2">{{ item.name }}</div>
+                                                </router-link>
                                         </div>
                                         <div class="bg-surface-100 p-1" style="border-radius: 30px">
                                             <div class="bg-surface-0 flex items-center gap-2 justify-center py-1 px-2"
