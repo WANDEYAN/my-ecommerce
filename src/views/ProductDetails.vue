@@ -5,11 +5,14 @@ import { RatingService } from '@/service/RatingService';
 import { onMounted, ref } from 'vue';
 import BuyButton from './uikit/BuyButton.vue';
 import FavorityButton from './uikit/FavorityButton.vue';
+import router from '@/router';
+import { useRoute } from 'vue-router';
 
-const products = ref([]);
+const product = ref(null);
 const images = ref([]);
 const ratings = ref([]);
-const ratingItem = ref(4)
+const ratingItem = ref(0)
+const baseUrlImage = import.meta.env.VITE_API_BASE_URL;
 const galleriaResponsiveOptions = ref([
     {
         breakpoint: '1024px',
@@ -49,10 +52,14 @@ const carouselResponsiveOptions = ref([
 const formatCurrency = (value) => {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 };
+const route = useRoute();
+onMounted(async () => {
+    const productId = route.params.id;
+    product.value = await ProductService.getProductById(productId);
+    console.log(product.value);
+    images.value.push(product.value.image);
+    ratingItem.value = product.value.rating;
 
-onMounted(() => {
-    ProductService.getProductsSmall().then((data) => (products.value = data));
-    PhotoService.getImages().then((data) => (images.value = data));
     RatingService.getRatings().then((data) => {
         ratings.value = data
     });
@@ -61,32 +68,31 @@ onMounted(() => {
 <template>
     <div className="card">
         <div class="font-semibold text-xl mb-4">Product Details</div>
-        <div class="grid" style=" grid-template-columns: 1fr 1fr; gap: 2rem;">
-            <div class="col">
-                <Galleria :value="images" :responsiveOptions="galleriaResponsiveOptions" :numVisible="5"
-                    containerStyle="max-width: 640px">
-                    <template #item="slotProps">
-                        <img :src="slotProps.item.itemImageSrc" :alt="slotProps.item.alt" style="width: 100%" />
-                    </template>
-                    <template #thumbnail="slotProps">
-                        <img :src="slotProps.item.thumbnailImageSrc" :alt="slotProps.item.alt" />
-                    </template>
-                </Galleria>
-            </div>
-            <div class="col">
-                <div class="font-semibold text-xl mb-4">Spalding 7.4 NBA</div>
-                <Rating v-model="ratingItem" readonly></Rating>
-                <div class="text-2xl my-4">
-                    {{ formatCurrency(34.90) }}
+            <div v-if="product" class="grid" style=" grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div class="col">
+                    <Galleria :value="images" :responsiveOptions="galleriaResponsiveOptions" :numVisible="5"
+                        containerStyle="max-width: 640px">
+                        <template #item="slotProps">
+                            <img :src="baseUrlImage + `/uploads/${slotProps.item}`" :alt="slotProps.item.alt" style="width: 100%" />
+                        </template>
+                        <template #thumbnail="slotProps">
+                            <img :src="baseUrlImage + `/uploads/${slotProps.item}`" :alt="slotProps.item.alt" style="width: 50%"/>
+                        </template>
+                    </Galleria>
                 </div>
-
-                <div class="flex" style="width: 100%; padding-top: 35%; flex-direction: column; align-items: center;">
-                    <BuyButton />
-                    <FavorityButton />
+                <div class="col">
+                    <div class="font-semibold text-xl mb-4">{{ product.name }}</div>
+                    <Rating v-model="ratingItem" readonly></Rating>
+                    <div class="text-2xl my-4">
+                        {{ formatCurrency(product.price) }}
+                    </div>
+                    <div class="flex" style="width: 100%; padding-top: 35%; flex-direction: column; align-items: center;">
+                        <BuyButton />
+                        <FavorityButton />
+                    </div>
+    
                 </div>
-
             </div>
-        </div>
         <div class="mt-10">
             <div class="font-semibold text-xl mb-4">TabMenu</div>
             <Tabs value="0">
@@ -97,7 +103,7 @@ onMounted(() => {
                 </TabList>
                 <TabPanels>
                     <TabPanel value="0">
-                        <p>aboute detais</p>
+                        <p v-if="product">{{ product.description }}</p>
                     </TabPanel>
                     <TabPanel value="1">
                         <DataView :value="ratings" layout="list" :paginator="true" :rows="3">
