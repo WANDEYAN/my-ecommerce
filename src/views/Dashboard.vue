@@ -89,8 +89,8 @@ const formatCurrency = (value) => {
                 <DataTable :value="products" :rows="5" :paginator="true" responsiveLayout="scroll">
                     <Column style="width: 15%" header="Image">
                         <template #body="slotProps">
-                            <img :src="baseUrlImage + `/uploads/${slotProps.data.image}`"
-                                :alt="slotProps.data.image" width="50" class="shadow" />
+                            <img :src="slotProps.data?.image?.[0]?.thumbnailUrl ?? '/placeholder'"
+                                :alt="'image of ' + slotProps.data?.name" width="50" class="shadow" />
                         </template>
                     </Column>
                     <Column field="name" header="Name" :sortable="true" style="width: 35%"></Column>

@@ -1,18 +1,15 @@
 <script setup>
-import { PhotoService } from '@/service/PhotoService';
 import { ProductService } from '@/service/ProductService';
 import { RatingService } from '@/service/RatingService';
 import { onMounted, ref } from 'vue';
 import BuyButton from './uikit/BuyButton.vue';
 import FavorityButton from './uikit/FavorityButton.vue';
-import router from '@/router';
 import { useRoute } from 'vue-router';
 
 const product = ref(null);
 const images = ref([]);
 const ratings = ref([]);
 const ratingItem = ref(0)
-const baseUrlImage = import.meta.env.VITE_API_BASE_URL;
 const galleriaResponsiveOptions = ref([
     {
         breakpoint: '1024px',
@@ -56,8 +53,7 @@ const route = useRoute();
 onMounted(async () => {
     const productId = route.params.id;
     product.value = await ProductService.getProductById(productId);
-    console.log(product.value);
-    images.value.push(product.value.image);
+    images.value = product.value.image;
     ratingItem.value = product.value.rating;
 
     RatingService.getRatings().then((data) => {
@@ -73,10 +69,10 @@ onMounted(async () => {
                     <Galleria :value="images" :responsiveOptions="galleriaResponsiveOptions" :numVisible="5"
                         containerStyle="max-width: 640px">
                         <template #item="slotProps">
-                            <img :src="baseUrlImage + `/uploads/${slotProps.item}`" :alt="slotProps.item.alt" style="width: 100%" />
+                            <img :src="slotProps?.item?.imageUrl" :alt="slotProps.item.alt" style="width: 100%" />
                         </template>
                         <template #thumbnail="slotProps">
-                            <img :src="baseUrlImage + `/uploads/${slotProps.item}`" :alt="slotProps.item.alt" style="width: 50%"/>
+                            <img :src="slotProps?.item?.thumbnailUrl" :alt="slotProps.item.alt"/>
                         </template>
                     </Galleria>
                 </div>

@@ -79,8 +79,8 @@ function getSeverity(product) {
                                 <router-link :to="'/products/' + item.id" >
                                     <div class="md:w-40 relative">
                                         <img class="block xl:block mx-auto rounded w-full"
-                                            :src="baseUrlImage + `/uploads/${item.image}`"
-                                            :alt="item.name" />
+                                            :src="item.image?.[0]?.imageUrl ?? 'placeholder'"
+                                            :alt="'image of ' + item.name" />
                                         <Tag :value="item.inventoryStatus" :severity="getSeverity(item)"
                                             class="absolute dark:!bg-surface-900" style="left: 4px; top: 4px"></Tag>
                                     </div>
@@ -132,8 +132,8 @@ function getSeverity(product) {
                                 <div class="bg-surface-50 flex justify-center rounded p-4">
                                     <div class="relative mx-auto">
                                         <img class="rounded w-full"
-                                            :src="baseUrlImage + `/uploads/${item.image}`"
-                                            :alt="item.name" style="max-width: 300px" />
+                                            :src="item.image?.[0]?.imageUrl ?? '/placeholder'"
+                                            :alt="'image of ' + item.name" style="max-width: 300px" />
                                         <Tag :value="item.inventoryStatus" :severity="getSeverity(item)"
                                             class="absolute dark:!bg-surface-900" style="left: 4px; top: 4px"></Tag>
                                     </div>
