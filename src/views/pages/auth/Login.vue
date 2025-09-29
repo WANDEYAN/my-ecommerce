@@ -32,13 +32,13 @@ const handlerLoginClick = async () => {
             </div>
 
             <div>
+                <div v-if="showError" class="p-3 mb-3 text-center" style="background-color: #ffcdd2; color: #c63737; border-radius: 8px;">
+                    Login our password invalids.
+                </div>
                 <label for="email1"
                     class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Email</label>
                 <InputText id="email1" type="text" placeholder="Email address" class="w-full md:w-[30rem] mb-8"
                     v-model="email" />
-                    <div v-if="showError" class="p-3 mb-3 text-center" style="background-color: #ffcdd2; color: #c63737; border-radius: 8px;">
-                        Login our password invalids.
-                    </div>
 
                 <label for="password1"
                     class="block text-surface-900 dark:text-surface-0 font-medium text-xl mb-2">Password</label>
@@ -52,6 +52,9 @@ const handlerLoginClick = async () => {
                     </div>
                     <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Forgot
                         password?</span>
+                    <router-link to="/user/register">
+                        <span class="font-medium no-underline ml-2 text-right cursor-pointer text-primary">Sing Up</span>
+                    </router-link>
                 </div>
                 <Button label="Sign In" class="w-full" @click="handlerLoginClick"></Button>
             </div>

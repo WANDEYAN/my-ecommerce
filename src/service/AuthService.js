@@ -56,4 +56,22 @@ export async function handlerLogin(email, password){
   }
 }
 
+export async function register({name = "", email = "", password = ""} = {}){
+  //TODO: implementar lógica para salvar usuário e tratar resposta do servidor
+  try{
+    const response = await apiClient.post("/users/register", 
+    { 
+      name: name,
+      email: email,
+      password: password
+    }
+  );
+  console.log(response.data);
+    return {success: true ,status: response.status, message: "User created successfully"};
+  }catch(error){
+    if(error?.response)
+      return {success: false ,status: error.response.status, message: error.response.data};
+  }
+}
+
 export default apiClient;
