@@ -171,12 +171,17 @@ const router = createRouter({
             path: '/auth/error',
             name: 'error',
             component: () => import('@/views/pages/auth/Error.vue')
+        },
+        {
+            path: '/user/register',
+            name: 'register',
+            component: () => import('@/views/pages/RegisterUser.vue')
         }
     ]
 });
 
 router.beforeEach((to, from, next) => {
-    const publicPages = ["/auth/login","/home","/landing"];
+    const publicPages = ["/auth/login","/home","/landing","/user/register"];
     const authRequired = !publicPages.includes(to.path);
     const isLoggedIn = localStorage.getItem("authToken");
 
