@@ -2,9 +2,9 @@
 import { ProductService } from '@/service/ProductService';
 import { RatingService } from '@/service/RatingService';
 import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import BuyButton from './uikit/BuyButton.vue';
 import FavorityButton from './uikit/FavorityButton.vue';
-import { useRoute } from 'vue-router';
 
 const product = ref(null);
 const images = ref([]);
@@ -60,35 +60,44 @@ onMounted(async () => {
         ratings.value = data
     });
 });
+
+function getThumbnailUrl(imageUrl) {
+    if (!imageUrl || typeof imageUrl !== 'string') {
+        return '/image/placeholder';
+    }
+
+    const parts = imageUrl.split('/upload/');
+    return parts[0] + '/upload/h_60,w_80/' + parts[1];
+}
 </script>
 <template>
     <div className="card">
         <div class="font-semibold text-xl mb-4">Product Details</div>
-            <div v-if="product" class="grid" style=" grid-template-columns: 1fr 1fr; gap: 2rem;">
-                <div class="col">
-                    <Galleria :value="images" :responsiveOptions="galleriaResponsiveOptions" :numVisible="5"
-                        containerStyle="max-width: 640px">
-                        <template #item="slotProps">
-                            <img :src="slotProps?.item?.imageUrl" :alt="slotProps.item.alt" style="width: 100%" />
-                        </template>
-                        <template #thumbnail="slotProps">
-                            <img :src="slotProps?.item?.thumbnailUrl" :alt="slotProps.item.alt"/>
-                        </template>
-                    </Galleria>
-                </div>
-                <div class="col">
-                    <div class="font-semibold text-xl mb-4">{{ product.name }}</div>
-                    <Rating v-model="ratingItem" readonly></Rating>
-                    <div class="text-2xl my-4">
-                        {{ formatCurrency(product.price) }}
-                    </div>
-                    <div class="flex" style="width: 100%; padding-top: 35%; flex-direction: column; align-items: center;">
-                        <BuyButton />
-                        <FavorityButton />
-                    </div>
-    
-                </div>
+        <div v-if="product" class="grid" style=" grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div class="col">
+                <Galleria :value="images" :responsiveOptions="galleriaResponsiveOptions" :numVisible="5"
+                    containerStyle="max-width: 640px">
+                    <template #item="slotProps">
+                        <img :src="slotProps?.item?.imageUrl" :alt="slotProps.item.alt" style="width: 100%" />
+                    </template>
+                    <template #thumbnail="slotProps">
+                        <img :src="getThumbnailUrl(slotProps?.item?.imageUrl)" :alt="slotProps.item.alt" />
+                    </template>
+                </Galleria>
             </div>
+            <div class="col">
+                <div class="font-semibold text-xl mb-4">{{ product.name }}</div>
+                <Rating v-model="ratingItem" readonly></Rating>
+                <div class="text-2xl my-4">
+                    {{ formatCurrency(product.price) }}
+                </div>
+                <div class="flex" style="width: 100%; padding-top: 35%; flex-direction: column; align-items: center;">
+                    <BuyButton />
+                    <FavorityButton />
+                </div>
+
+            </div>
+        </div>
         <div class="mt-10">
             <div class="font-semibold text-xl mb-4">TabMenu</div>
             <Tabs value="0">
