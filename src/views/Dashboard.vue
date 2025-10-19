@@ -15,6 +15,15 @@ onMounted(() => {
 const formatCurrency = (value) => {
     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 };
+
+function getThumbnailUrl(imageUrl) {
+    if (!imageUrl || typeof imageUrl !== 'string') {
+        return '/image/placeholder';
+    }
+
+    const parts = imageUrl.split('/upload/');
+    return parts[0] + '/upload/h_60,w_80/' + parts[1];
+}
 </script>
 <template>
     <div class="grid grid-cols-12 gap-8">
@@ -89,7 +98,7 @@ const formatCurrency = (value) => {
                 <DataTable :value="products" :rows="5" :paginator="true" responsiveLayout="scroll">
                     <Column style="width: 15%" header="Image">
                         <template #body="slotProps">
-                            <img :src="slotProps.data?.image?.[0]?.thumbnailUrl ?? '/placeholder'"
+                            <img :src="getThumbnailUrl(slotProps.data?.image?.[0]?.imageUrl)"
                                 :alt="'image of ' + slotProps.data?.name" width="50" class="shadow" />
                         </template>
                     </Column>
